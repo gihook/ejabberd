@@ -1,4 +1,7 @@
 defmodule ModPresenceDemo do
+  require Record
+  Record.defrecord(:request, Record.extract(:request, from: "include/ejabberd_http.hrl"))
+
   use Ejabberd.Module
 
   def start(host, _opts) do
@@ -25,5 +28,23 @@ defmodule ModPresenceDemo do
   def mod_options(_host) do
     []
   end
-  
+
+  def process(url_params, request(method: :PUT, data: body) = request) do
+    IO.puts("------------------------")
+    IO.inspect(url_params)
+    IO.inspect(request)
+    IO.inspect(body)
+    IO.puts("------------------------")
+
+    {200, [], "dummy response"}
+  end
+
+  def process(url_params, request(method: :POST, data: body)) do
+    IO.puts("------------------------")
+    IO.inspect(url_params)
+    IO.inspect(body)
+    IO.puts("------------------------")
+
+    {200, [], "dummy response"}
+  end
 end
